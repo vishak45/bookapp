@@ -100,7 +100,7 @@ function SpecificBook() {
           setBook(response.data)
           // Fetch suggested books by same subject
           
-          const sugRes = await axios.get(`http://localhost:3000/api/book/genre/${response.data.subject}?limit=10&excludeId=${response.data._id}`);
+          const sugRes = await axios.get(`https://bookapp-2nn8.onrender.com/api/book/genre/${response.data.subject}?limit=10&excludeId=${response.data._id}`);
           if (sugRes.data && Array.isArray(sugRes.data)) {
             setSuggested(
               sugRes.data
