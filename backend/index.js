@@ -17,6 +17,7 @@ app.use(parser.json());
 app.use('/api/user',userRoutes);
 app.use('/api/book',bookRoutes);
 app.use('/api/hivebot',hivebotRoutes);
+app.get("/", (req, res) => res.status(200).send("server is running!"));
 storeBooks();
 app.listen(port,()=>{
     console.log(`Server is running on port ${port}`);
