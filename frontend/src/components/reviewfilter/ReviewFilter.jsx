@@ -16,7 +16,7 @@ function ReviewFilter() {
 
     const fetchData = async () => {
       try {
-        const res = await axios.get('http://localhost:3000/api/book/reviews', {
+        const res = await axios.get('https://bookapp-2nn8.onrender.com/api/book/reviews', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -46,7 +46,7 @@ function ReviewFilter() {
       });
 
       if (confirm.isConfirmed) {
-        const res = await axios.delete(`http://localhost:3000/api/book/review/${bookid}/${reviewid}`, {
+        const res = await axios.delete(`https://bookapp-2nn8.onrender.com/api/book/review/${bookid}/${reviewid}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
