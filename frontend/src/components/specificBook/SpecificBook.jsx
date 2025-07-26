@@ -102,6 +102,8 @@ function SpecificBook() {
           // Fetch suggested books by same subject
           
           const sugRes = await axios.get(`https://bookapp-2nn8.onrender.com/api/book/genre/${response.data.subject}?limit=10&excludeId=${response.data._id}`);
+
+
           if (sugRes.data && Array.isArray(sugRes.data)) {
             setSuggested(
               sugRes.data
@@ -236,8 +238,8 @@ const token = localStorage.getItem('token');
   // Reset form
   setNewReview({
     rating: 5,
-    comment: ''
-  });
+    reviewMessage: ''
+  })
 
   Swal.fire({
     icon: 'success',
@@ -509,7 +511,7 @@ const token = localStorage.getItem('token');
                   <textarea
                     name="reviewMessage"
                     placeholder="Write your review..."
-                    value={newReview.comment}
+                    value={newReview.reviewMessage}
                     onChange={handleInputChange}
                     className="form-control"
                     rows="3"
@@ -619,9 +621,16 @@ const token = localStorage.getItem('token');
                 </div>
               ) : (
                 suggested.map(sug => (
-                  <div key={sug._id} className="col-6 col-md-3 d-flex" onClick={() => window.location.href = `/book/${sug._id}`}>
+                  <div key={sug._id} className="col-6 col-md-3 d-flex">
                     <Link
+                      onClick={()=>
+                        setNewReview({
+    rating: 5,
+    reviewMessage: ''
+  })
+                      }
                       to={`/book/${sug._id}`}
+                     
                       className="card shadow text-decoration-none"
                       style={{
                         background: '#23272b',
