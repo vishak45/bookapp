@@ -156,7 +156,7 @@ body {
 /* Responsive Design */
 @media (max-width: 768px) {
   .swiper-parent {
-    height: 60vh;
+    height: 70vh;
   }
   .text-overlay h1 {
     font-size: 2rem;
@@ -168,7 +168,7 @@ body {
 
 @media (max-width: 480px) {
   .swiper-parent {
-    height: 40vh;
+    height: 50vh;
   }
   .text-overlay h1 {
     font-size: 1.5rem;
