@@ -98,6 +98,7 @@ function SpecificBook() {
         if (response.data) {
           setReviews(response.data.reviews)
           setBook(response.data)
+          window.scrollTo(0, 0)
           // Fetch suggested books by same subject
           
           const sugRes = await axios.get(`https://bookapp-2nn8.onrender.com/api/book/genre/${response.data.subject}?limit=10&excludeId=${response.data._id}`);
