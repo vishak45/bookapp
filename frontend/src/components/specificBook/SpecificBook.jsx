@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
+
 import axios from 'axios'
 import Swal from 'sweetalert2'
 
 function SpecificBook() {
   
-
+  
   const token=localStorage.getItem('token');
   const user=JSON.parse(localStorage.getItem('user'));
   const dispUser=user?user.name:'Guest';
@@ -603,7 +604,7 @@ const token = localStorage.getItem('token');
         </div>
 
         {/* You may also like section */}
-        <div className="row justify-content-center mt-5" onClick={() => window.location.reload()}>
+        <div className="row justify-content-center mt-5">
           
 
           <div className="col-12 col-lg-10">
@@ -617,7 +618,7 @@ const token = localStorage.getItem('token');
                 </div>
               ) : (
                 suggested.map(sug => (
-                  <div key={sug._id} className="col-6 col-md-3 d-flex">
+                  <div key={sug._id} className="col-6 col-md-3 d-flex" onClick={() => window.location.href = `/book/${sug._id}`}>
                     <Link
                       to={`/book/${sug._id}`}
                       className="card shadow text-decoration-none"
