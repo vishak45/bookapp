@@ -94,13 +94,13 @@ function SpecificBook() {
   useEffect(() => {
     const fetchBook = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/api/book/specificbook/${id}`)
+        const response = await axios.get(`https://bookapp-2nn8.onrender.com/api/book/specificbook/${id}`)
         if (response.data) {
           setReviews(response.data.reviews)
           setBook(response.data)
           // Fetch suggested books by same subject
           
-          const sugRes = await axios.get(`http://localhost:3000/api/book/genre/${response.data.subject}`);
+          const sugRes = await axios.get(`https://bookapp-2nn8.onrender.com/api/book/genre/${response.data.subject}`);
           if (sugRes.data && Array.isArray(sugRes.data)) {
             setSuggested(
               sugRes.data
@@ -113,7 +113,7 @@ function SpecificBook() {
             )
           }
           if(token){
-          const checkList=await axios.get(`http://localhost:3000/api/book/checklist/${id}`,{
+          const checkList=await axios.get(`https://bookapp-2nn8.onrender.com/api/book/checklist/${id}`,{
             headers: {
               Authorization: `Bearer ${token}`
             }
@@ -150,7 +150,7 @@ function SpecificBook() {
     }
     setAdded(true)
     try {
-      await axios.post(`http://localhost:3000/api/book/readlist/${id}`,{},{
+      await axios.post(`https://bookapp-2nn8.onrender.com/api/book/readlist/${id}`,{},{
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -171,7 +171,7 @@ function SpecificBook() {
 const handleDeleteReview=async(bid,rid)=>{
   
   try {
-    await axios.delete(`http://localhost:3000/api/book/review/${bid}/${rid}`,{
+    await axios.delete(`https://bookapp-2nn8.onrender.com/api/book/review/${bid}/${rid}`,{
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -211,7 +211,7 @@ const token = localStorage.getItem('token');
   // Add new review to state
   
   try{
-    const res=await axios.post(`http://localhost:3000/api/book/review/${id}`, {
+    const res=await axios.post(`https://bookapp-2nn8.onrender.com/api/book/review/${id}`, {
       userid: _id,
       name: name,
       rating: parseInt(newReview.rating),
