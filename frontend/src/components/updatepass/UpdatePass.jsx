@@ -43,7 +43,7 @@ function UpdatePass() {
 
     try {
       const res = await axios.put(
-        'http://localhost:3000/api/user/updatepassword',
+        'https://bookapp-2nn8.onrender.com/api/user/updatepassword',
         { oldpass, newpass },
         {
           headers: {
