@@ -16,7 +16,7 @@ function ReadList() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get('http://localhost:3000/api/book/readlist', {
+        const res = await axios.get('https://bookapp-2nn8.onrender.com/api/book/readlist', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -36,7 +36,7 @@ function ReadList() {
 
   const handleDelete = async (bookId) => {
     try {
-      const res = await axios.delete(`http://localhost:3000/api/book/readlist/${bookId}`, {
+      const res = await axios.delete(`https://bookapp-2nn8.onrender.com/api/book/readlist/${bookId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
