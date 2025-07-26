@@ -1,7 +1,7 @@
 const express=require('express');
 const router=express.Router();
 const protect=require('../middleware/authMiddleWare');
-const {getBooks,specificBook,getBookByGenre,addReview,addToReadList,deleteFromReadList,getAllReadList,checkList,reviewDelete,fetchBooksByReview,fetchByGenre}=require('../controller/bookController');
+const {getBooks,specificBook,getBookByGenre,addReview,addToReadList,deleteFromReadList,getAllReadList,checkList,reviewDelete,fetchBooksByReview,fetchByGenre,searchAllBooks}=require('../controller/bookController');
 router.get('/all',getBooks);
 router.get('/specificbook/:bid',specificBook);
 router.get('/genre/:genre',getBookByGenre);
@@ -13,4 +13,5 @@ router.get('/checklist/:bid',protect,checkList);
 router.get('/reviews',protect,fetchBooksByReview);
 router.delete('/review/:bid/:rid',protect,reviewDelete);
 router.get('/genre/:genre',fetchByGenre);
+router.get('/search',searchAllBooks);
 module.exports=router;
