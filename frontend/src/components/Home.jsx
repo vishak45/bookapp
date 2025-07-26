@@ -18,7 +18,7 @@ function Home() {
     const fetchBooks = async () => {
       setLoading(true);
       try {
-        const response = await axios.get(`http://localhost:3000/api/book/all?page=${currentPage}&limit=${booksPerPage}`);
+        const response = await axios.get(`https://bookapp-2nn8.onrender.com/api/book/all?page=${currentPage}&limit=${booksPerPage}`);
         setBooks(response.data.books);
         setTotalPages(response.data.totalPages);
         setLoading(false);
