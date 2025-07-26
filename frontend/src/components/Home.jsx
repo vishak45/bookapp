@@ -14,7 +14,7 @@ function Home() {
   useEffect(() => {
     const fetchBooks = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/api/book/all');
+        const response = await axios.get('https://bookapp-2nn8.onrender.com/api/book/all');
         setBooks(response.data);
         setLoading(false);
       } catch (error) {
