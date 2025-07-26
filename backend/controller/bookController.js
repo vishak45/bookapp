@@ -2,14 +2,30 @@ const Book = require('../model/bookModel');
 const readListModel=require('../model/readList');
 
 const getBooks = async (req, res) => {
-    try {
-        const books = await Book.find();
-        res.status(200).json(books);
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: "Internal Server Error" });
-    }
+  try {
+    // Parse page and limit from query params
+    const page = parseInt(req.query.page) || 1;       // default page 1
+    const limit = parseInt(req.query.limit) || 20;    // default 20 books per page
+    const skip = (page - 1) * limit;
+
+    // Fetch books with pagination
+    const books = await Book.find().skip(skip).limit(limit);
+
+    // Count total books for pagination info
+    const totalBooks = await Book.countDocuments();
+
+    res.status(200).json({
+      books,
+      totalBooks,
+      totalPages: Math.ceil(totalBooks / limit),
+      currentPage: page,
+    });
+  } catch (error) {
+    console.error('❌ Error in getBooks:', error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
 };
+
 
 // AUTO FETCH: Fetch books from Open Library and store in DB
 const storeBooks = async () => {
@@ -313,5 +329,16 @@ res.status(200).json(reviews);
   }
 };
 
+const fetchByGenre=async(req,res)=>{
+    try{
+        const genre=req.params.genre;
+        const books=await Book.find({subject:genre})
+        res.status(200).json(books);
+    }
+    catch(error)
+    {
+        console.log(error);
+    }
+}
 
-module.exports = { getBooks, storeBooks,specificBook,getBookByGenre,addReview,addToReadList,deleteFromReadList,getAllReadList,checkList,reviewDelete,fetchBooksByReview };
+module.exports = { getBooks, storeBooks,specificBook,getBookByGenre,addReview,addToReadList,deleteFromReadList,getAllReadList,checkList,reviewDelete,fetchBooksByReview,fetchByGenre };
