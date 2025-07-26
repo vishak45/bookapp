@@ -24,7 +24,7 @@ function HiveBot() {
 
     const checkHistory = async () => {
       try{
-      const res = await axios.get('http://localhost:3000/api/hivebot/checkhistory', {
+      const res = await axios.get('https://bookapp-2nn8.onrender.com/api/hivebot/checkhistory', {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -61,7 +61,7 @@ useEffect(() => {
     setLoading(true);
 
     try {
-      const res = await axios.post('http://localhost:3000/api/hivebot/askquestion', { prompt, chatId }, {
+      const res = await axios.post('https://bookapp-2nn8.onrender.com/api/hivebot/askquestion', { prompt, chatId }, {
         headers: {
           Authorization: `Bearer ${token}`
         }
