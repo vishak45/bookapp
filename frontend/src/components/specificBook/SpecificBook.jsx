@@ -624,10 +624,8 @@ const token = localStorage.getItem('token');
                   <div key={sug._id} className="col-6 col-md-3 d-flex">
                     <Link
                       onClick={()=>
-                        setNewReview({
-    rating: 5,
-    reviewMessage: ''
-  })
+                        window.location.reload()
+  
                       }
                       to={`/book/${sug._id}`}
                      
