@@ -179,7 +179,7 @@ useEffect(() => {
 
 
       {/* Main Chat Window */}
-      <div className="card bg-secondary text-white flex-grow-1 shadow" style={{ height: '90vh' ,width:'90%'}}>
+      <div className="card bg-secondary text-white flex-grow-1 shadow" style={{ height: '90vh' ,width:'100%'}}>
         <div className="card-header bg-dark text-center fs-4 fw-bold border-bottom-0">
           🤖 HiveBot — Your Book Assistant
         </div>
