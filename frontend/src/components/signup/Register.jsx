@@ -24,7 +24,7 @@ function Register() {
     e.preventDefault();
     if (validate()) {
       try{
-        const res=await axios.post('http://localhost:3000/api/user/register',{name,email,password});
+        const res=await axios.post('https://bookapp-2nn8.onrender.com/api/user/register',{name,email,password});
       console.log(res.data);
       if(res.data)
       {
