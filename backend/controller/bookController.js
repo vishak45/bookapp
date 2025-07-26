@@ -329,16 +329,24 @@ res.status(200).json(reviews);
   }
 };
 
-const fetchByGenre=async(req,res)=>{
-    try{
-        const genre=req.params.genre;
-        const books=await Book.find({subject:genre})
-        res.status(200).json(books);
-    }
-    catch(error)
-    {
-        console.log(error);
-    }
-}
+const fetchByGenre = async (req, res) => {
+  try {
+    const genre = req.params.genre;
+    const limit = parseInt(req.query.limit) || 20;
+    const excludeId = req.query.excludeId;
 
+    const filter = { subject: genre };
+
+    if (excludeId) {
+      filter._id = { $ne: excludeId };
+    }
+
+    const books = await Book.find(filter).limit(limit);
+
+    res.status(200).json(books);
+  } catch (error) {
+    console.error('❌ Error fetching books by genre:', error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+};
 module.exports = { getBooks, storeBooks,specificBook,getBookByGenre,addReview,addToReadList,deleteFromReadList,getAllReadList,checkList,reviewDelete,fetchBooksByReview,fetchByGenre };
