@@ -35,7 +35,7 @@ const askQuestion = async (req, res) => {
       });
       await chat.save();
     }
-
+    
     res.status(200).json({ reply: text, chatId: chat._id });
   } catch (error) {
     console.error("Gemini API error:", error);
@@ -48,9 +48,9 @@ const historyFetch = async (req, res) => {
   try {
     const userId = req.user.id;
     const chats = await hiveChat.find({ userid: userId });
-
+    let id=1;
     const history = chats.map(chat => {
-      const firstQuestion = chat.messages[0]?.question || 'Untitled Chat';
+      const firstQuestion = `chat ${id++}`;
 
       return {
         chatId: chat._id,

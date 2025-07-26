@@ -6,13 +6,15 @@ function SearchRecommend() {
     const navigate = useNavigate();
   const [books, setBooks] = useState([]);
   const [query, setQuery] = useState('');
-
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get('http://localhost:3000/api/book/all');
         if (response.data) {
-          setBooks(response.data);
+          setBooks(response.data); // only show first 100
+
+          setLoading(false);
         }
       } catch (error) {
         console.error('Error fetching books:', error);
@@ -49,13 +51,18 @@ function SearchRecommend() {
           backgroundColor: '#111'
         }}
       />
-
+    <div>
+      {loading && <p style={{
+        color: '#28a745',
+        fontSize: '1.2rem',
+      }}>Loading books please wait...</p>}
+    </div>
       <div>
         {query && filteredBooks.length === 0 && (
           <p style={{ color: '#aaa' }}>No matching books found.</p>
         )}
 
-        {filteredBooks.map((book, index) => (
+        {filteredBooks.slice(0, 100).map((book, index) => (
           <div
           className='book-card'
             key={index}

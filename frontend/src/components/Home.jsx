@@ -120,7 +120,7 @@ function Home() {
                 No books found.
               </div>
             ) : (
-              filteredBooks.map((book, index) => (
+              filteredBooks.slice(0, 100).map((book, index) => (
                 <div
                   key={index}
                   className="col-12 col-sm-6 col-md-4 col-lg-2  d-flex justify-content-center"

@@ -4,6 +4,7 @@ import axios from 'axios';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 
+
 function HiveBot() {
   const token = localStorage.getItem('token');
   const navigate = useNavigate();
@@ -14,7 +15,7 @@ function HiveBot() {
   const [chatId, setChatId] = useState(null);
   const [dummyHistory, setDummyHistory] = useState([]);
   const chatContainerRef = useRef(null);
-
+  const [newMsg,setNewMSg]=useState(false);
   // Dummy chat history
  
 
@@ -30,6 +31,7 @@ function HiveBot() {
       });
 
       if (res.data.history) {
+        console.log(res.data.history);
         setDummyHistory(res.data.history);
       }
     }
@@ -41,12 +43,14 @@ function HiveBot() {
 
     checkHistory();
     
-  }, [token, navigate, dummyHistory]);
+  }, [token, navigate, newMsg]);
 
   useEffect(() => {
     chatContainerRef.current?.scrollTo(0, chatContainerRef.current.scrollHeight);
   }, [chat]);
-
+useEffect(() => {
+  console.log("Updated chatId:");
+}, [chatId]);
   const handleAsk = async () => {
     const prompt = userInput.trim();
     if (!prompt) return;
@@ -62,11 +66,16 @@ function HiveBot() {
           Authorization: `Bearer ${token}`
         }
       });
-      
+       if(res.data.chatId&&chatId===null){
+        setChatId(res.data.chatId);
+        setSelectedChatIndex(dummyHistory.length);
+        newMsg?setNewMSg(false):setNewMSg(true);
+       }
       const chunks = res.data.reply.split(/(?<=[.?!])\s+/);
       let currentMessage = '';
       let index = 0;
-
+      
+      
       const interval = setInterval(() => {
         if (index >= chunks.length) {
           clearInterval(interval);
@@ -77,9 +86,11 @@ function HiveBot() {
         currentMessage += chunks[index] + ' ';
         const updatedChat = [...newChat, { type: 'bot', message: currentMessage.trim() }];
         setChat(updatedChat);
-        setSelectedChatIndex(0);
+       
         index++;
-      }, 100);
+      }
+      
+      , 100);
 
     } catch (err) {
       console.error('HiveBot API Error:', err);
@@ -118,12 +129,13 @@ function HiveBot() {
       setChat([]);
       setChatId(null);
        setSelectedChatIndex(-1)
+       
     }}
   >
     ➕ New Chat
   </div>
 
-  {dummyHistory.slice().reverse().map((item, index) => (
+  {dummyHistory.map((item, index) => (
     <div
       key={index}
       className={`p-2 mb-2 rounded ${selectedChatIndex === index ? 'bg-secondary text-white' : 'bg-dark text-light'}`}
@@ -152,7 +164,7 @@ function HiveBot() {
   </div>
 
   <div style={{ display: 'flex', overflowX: 'auto', gap: '8px' }}>
-    {dummyHistory.slice().reverse().map((item, index) => (
+    {dummyHistory.map((item, index) => (
       <div
         key={index}
         className={`p-2 rounded flex-shrink-0 ${selectedChatIndex === index ? 'bg-secondary text-white' : 'bg-dark text-light'}`}
@@ -167,7 +179,7 @@ function HiveBot() {
 
 
       {/* Main Chat Window */}
-      <div className="card bg-secondary text-white flex-grow-1 shadow" style={{ height: '90vh' }}>
+      <div className="card bg-secondary text-white flex-grow-1 shadow" style={{ height: '90vh' ,width:'90%'}}>
         <div className="card-header bg-dark text-center fs-4 fw-bold border-bottom-0">
           🤖 HiveBot — Your Book Assistant
         </div>
@@ -207,7 +219,8 @@ function HiveBot() {
                     style={{
                       backgroundColor: msg.type === 'user' ? '#28a745' : '#212529',
                       color: 'white',
-                      maxWidth: '85%',
+                      maxWidth: '70%', 
+                      width: 'fit-content',
                       wordBreak: 'break-word',
                       whiteSpace: 'pre-wrap',
                       borderRadius: '20px'
