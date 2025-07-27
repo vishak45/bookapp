@@ -24,7 +24,7 @@ function HiveBot() {
 
     const checkHistory = async () => {
       try{
-      const res = await axios.get('https://bookapp-2nn8.onrender.com/api/hivebot/checkhistory', {
+      const res = await axios.get('http://localhost:3000/api/hivebot/checkhistory', {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -61,7 +61,7 @@ useEffect(() => {
     setLoading(true);
 
     try {
-      const res = await axios.post('https://bookapp-2nn8.onrender.com/api/hivebot/askquestion', { prompt, chatId }, {
+      const res = await axios.post('http://localhost:3000/api/hivebot/askquestion', { prompt, chatId }, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -179,7 +179,8 @@ useEffect(() => {
 
 
       {/* Main Chat Window */}
-      <div className="card bg-secondary text-white flex-grow-1 shadow" style={{ height: '90vh' ,width:'100%'}}>
+      <div className="card bg-secondary text-white flex-grow-1 shadow w-100 h-[90vh] md:h-[90vh]">
+
         <div className="card-header bg-dark text-center fs-4 fw-bold border-bottom-0">
           🤖 HiveBot — Your Book Assistant
         </div>
@@ -217,14 +218,15 @@ useEffect(() => {
                   <div
                     className="p-3 rounded"
                     style={{
-                      backgroundColor: msg.type === 'user' ? '#28a745' : '#212529',
-                      color: 'white',
-                      maxWidth: '70%', 
-                      width: 'fit-content',
-                      wordBreak: 'break-word',
-                      whiteSpace: 'pre-wrap',
-                      borderRadius: '20px'
-                    }}
+  backgroundColor: msg.type === 'user' ? '#28a745' : '#212529',
+  color: 'white',
+  maxWidth: '90%', 
+  width: 'fit-content',
+  wordBreak: 'break-word',
+  whiteSpace: 'pre-wrap',
+  borderRadius: '20px'
+}}
+
                   >
                     {msg.type === 'bot' ? (
                       <ReactMarkdown remarkPlugins={[remarkGfm]}>
