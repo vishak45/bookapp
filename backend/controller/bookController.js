@@ -31,7 +31,7 @@ const getBooks = async (req, res) => {
 const storeBooks = async () => {
    const bookCount = await Book.countDocuments();
 
-        if (bookCount >= 8000) {
+        if (bookCount >= 5000) {
             console.log('✅ Skipping fetch: Already have 8000+ books in the database.');
             return;
         }
