@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import { Link, useNavigate } from 'react-router-dom';
 
+import { Link, useNavigate } from 'react-router-dom';
+import axiosInstance from '../axiosinstance/axiosInstance';
 import './Home.css';
 import WelcomePage from './WelcomePage';
 
@@ -18,7 +18,7 @@ function Home() {
     const fetchBooks = async () => {
       setLoading(true);
       try {
-        const response = await axios.get(`https://bookapp-2nn8.onrender.com/api/book/all?page=${currentPage}&limit=${booksPerPage}`);
+        const response = await axiosInstance.get(`/book/all?page=${currentPage}&limit=${booksPerPage}`);
         setBooks(response.data.books);
         setTotalPages(response.data.totalPages);
         setLoading(false);
@@ -87,114 +87,128 @@ function Home() {
             </div>
           ) : (
             <>
-              <div className="row g-4 p-2 justify-content-center">
-                {filteredBooks.length === 0 ? (
-                  <div className="text-center" style={{ fontSize: 20, marginTop: 40, color: '#28a745' }}>
-                    No books found.
-                  </div>
-                ) : (
-                  filteredBooks.map((book, index) => (
-                    <div
-                      key={index}
-                      className="col-12 col-sm-6 col-md-4 col-lg-2 d-flex justify-content-center"
-                    >
-                      <div
-                        className="card shadow book-card"
-                        style={{
-                          border: 'none',
-                          borderRadius: '16px',
-                          width: 280,
-                          minHeight: 420,
-                          maxHeight: 420,
-                          background: '#23272b',
-                          color: '#fff',
-                          display: 'flex',
-                          flexDirection: 'column',
-                          alignItems: 'center',
-                          transition: 'transform 0.2s, box-shadow 0.2s',
-                          cursor: 'pointer',
-                          overflow: 'hidden',
-                        }}
-                        onClick={() => navigate(`/book/${book._id}`)}
-                      >
-                        {book.coverImage ? (
-                          <img
-                            src={book.coverImage}
-                            alt={book.title}
-                            className="card-img-top"
-                            style={{
-                              width: '100%',
-                              height: '220px',
-                              objectFit: 'cover',
-                              marginBottom: '0.75rem',
-                              borderRadius: '8px',
-                              boxShadow: '0 2px 8px #28a74522',
-                            }}
-                          />
-                        ) : (
-                          <div
-                            style={{
-                              width: '100%',
-                              height: '220px',
-                              background: 'linear-gradient(135deg, #28a74533 0%, #00000011 100%)',
-                              marginBottom: '0.75rem',
-                              display: 'flex',
-                              alignItems: 'center',
-                              justifyContent: 'center',
-                              color: '#28a745',
-                              borderRadius: '8px',
-                              fontWeight: 600,
-                              fontSize: 18,
-                              letterSpacing: 1,
-                            }}
-                          >
-                            No Image
-                          </div>
-                        )}
-                        <div className="card-body p-2 d-flex flex-column align-items-center w-100">
-                          <strong
-                            style={{
-                              color: '#28a745',
-                              fontSize: 18,
-                              marginBottom: 6,
-                              fontWeight: 600,
-                              letterSpacing: 0.5,
-                            }}
-                          >
-                            {book.title}
-                          </strong>
-                          <span
-                            style={{
-                              color: '#fff',
-                              background: '#28a745',
-                              borderRadius: 8,
-                              padding: '2px 10px',
-                              fontWeight: 500,
-                              fontSize: 15,
-                              marginBottom: 2,
-                              marginTop: 4,
-                              display: 'inline-block',
-                            }}
-                          >
-                            {book.subject || 'Unknown Genre'}
-                          </span>
-                          <em
-                            style={{
-                              color: '#bdbdbd',
-                              fontSize: 14,
-                              marginTop: 8,
-                              display: 'block',
-                              minHeight: 36,
-                            }}
-                          >
-                            {book.authors?.join(', ') || 'Unknown Author'}
-                          </em>
-                        </div>
-                      </div>
-                    </div>
-                  ))
-                )}
-              </div>
+              <div className="row g-4 p-3 justify-content-center">
+  {filteredBooks.length === 0 ? (
+    <div
+      className="text-center"
+      style={{
+        fontSize: 20,
+        marginTop: 60,
+        color: '#28a745',
+        fontWeight: 500,
+        letterSpacing: 1,
+      }}
+    >
+      No books found.
+    </div>
+  ) : (
+    filteredBooks.map((book, index) => (
+      <div
+        key={index}
+        className="col-12 col-sm-6 col-md-4 col-lg-2 d-flex justify-content-center"
+      >
+        <div
+          className="card shadow-lg book-card h-100"
+          style={{
+            border: 'none',
+            borderRadius: '16px',
+            width: 280,
+            maxHeight: 420,
+            background: '#23272b',
+            color: '#fff',
+            transition: 'transform 0.3s ease-in-out',
+            cursor: 'pointer',
+            overflow: 'hidden',
+          }}
+          onClick={() => navigate(`/book/${book._id}`)}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = 'scale(1.03)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = 'scale(1)';
+          }}
+        >
+          {book.coverImage ? (
+            <img
+              src={book.coverImage}
+              alt={book.title}
+              className="card-img-top"
+              style={{
+                width: '100%',
+                height: '220px',
+                objectFit: 'cover',
+                borderTopLeftRadius: '16px',
+                borderTopRightRadius: '16px',
+                boxShadow: '0 2px 8px #28a74555',
+              }}
+            />
+          ) : (
+            <div
+              style={{
+                width: '100%',
+                height: '220px',
+                background: 'linear-gradient(135deg, #28a74533 0%, #00000011 100%)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: '#28a745',
+                fontWeight: 600,
+                fontSize: 18,
+                borderTopLeftRadius: '16px',
+                borderTopRightRadius: '16px',
+                letterSpacing: 1,
+              }}
+            >
+              No Image
+            </div>
+          )}
+
+          <div className="card-body px-3 py-3 text-center d-flex flex-column align-items-center justify-content-between">
+            <h5
+              className="card-title mb-2"
+              style={{
+                color: '#28a745',
+                fontWeight: 600,
+                fontSize: 18,
+                letterSpacing: 0.5,
+                minHeight: 45,
+              }}
+            >
+              {book.title}
+            </h5>
+
+            <span
+              className="badge"
+              style={{
+                backgroundColor: '#28a745',
+                color: '#fff',
+                padding: '6px 12px',
+                borderRadius: '12px',
+                fontSize: 14,
+                fontWeight: 500,
+              }}
+            >
+              {book.subject || 'Unknown Genre'}
+            </span>
+
+            <p
+              className="card-text mt-3 mb-0"
+              style={{
+                color: '#bdbdbd',
+                fontStyle: 'italic',
+                fontSize: 14,
+                minHeight: 36,
+              }}
+            >
+              {book.authors?.join(', ') || 'Unknown Author'}
+            </p>
+          </div>
+        </div>
+      </div>
+    ))
+  )}
+</div>
+
 
               {/* Pagination Controls */}
               {totalPages > 1 && (

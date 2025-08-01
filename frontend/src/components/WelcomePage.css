@@ -1,39 +1,26 @@
 :root {
-  --primary-color: #28a745; /* Booksaw’s primary purple */
-  --secondary-color: #e9ecef; /* Light gray */
+  --primary-color: #28a745;
+  --secondary-color: #e9ecef;
   --font-family: 'Poppins', sans-serif;
   --text-dark: #2d2d2d;
+  --overlay-dark: rgba(0, 0, 0, 0.55);
 }
 
 body {
   font-family: var(--font-family);
+  background: #f8f9fa;
   margin: 0;
   padding: 0;
-  background: #f8f9fa;
 }
 
-/* Swiper Parent: Full screen hero section */
+/* Swiper Fullscreen Hero */
 .swiper-parent {
-  height: 65vh; /* full viewport height */
+  height: 65vh;
   width: 100%;
-  margin: 0;
   overflow: hidden;
   position: relative;
 }
 
-/* Optional fade to blend into next section */
-.swiper-parent::after {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  height: 80px;
-  width: 100%;
-  
-  z-index: 3;
-}
-
-/* Swiper Container */
 .mySwiper {
   width: 100%;
   height: 100%;
@@ -44,101 +31,96 @@ body {
   position: relative;
   width: 100%;
   height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
 }
 
 .swiper-slide img {
   width: 100%;
   height: 100%;
-  object-fit: cover; /* fill and crop like Booksaw */
-  display: block;
+  object-fit: cover;
+  filter: brightness(90%);
+  transition: transform 0.5s ease;
 }
 
-/* Text Overlay on each slide */
+.swiper-slide:hover img {
+  transform: scale(1.02);
+}
+
+/* Text Overlay */
 .text-overlay {
   position: absolute;
   top: 50%;
   left: 50%;
+  width: 90%;
+  max-width: 100%;
   transform: translate(-50%, -50%);
+  background: var(--overlay-dark);
+  padding: 30px;
+  border-radius: 16px;
   color: white;
-  width: 100%;
-
-  padding: 20px;
+  z-index: 10;
   text-align: center;
-  z-index: 2;
-}
-
-.text-overlay::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5); /* Dark overlay for readability */
-  z-index: -1;
-  border-radius: 10px;
+  backdrop-filter: blur(4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
 }
 
 .text-overlay h1 {
-  font-size: 2.8rem;
+  font-size: 3rem;
   font-weight: 700;
-  margin-bottom: 15px;
-  line-height: 1.2;
+  margin-bottom: 10px;
 }
 
 .text-overlay p {
-  font-size: 1.25rem;
+  font-size: 1.2rem;
   font-weight: 400;
-  margin-bottom: 20px;
+  margin-bottom: 25px;
+  line-height: 1.5;
 }
 
 .text-overlay .btn {
   background: var(--primary-color);
   color: white;
-  padding: 12px 30px;
-  border-radius: 25px;
-  text-decoration: none;
+  padding: 12px 32px;
+  border-radius: 50px;
   font-size: 1rem;
   font-weight: 600;
-  transition: all 0.3s ease;
+  text-decoration: none;
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
 }
 
 .text-overlay .btn:hover {
-  background: #000000;
+  background: black;
   transform: scale(1.05);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
   color: white;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
 }
 
-/* Swiper Pagination Bullets */
+/* Pagination Bullets */
 .swiper-pagination {
-  bottom: 20px;
+  bottom: 15px;
 }
 
 .swiper-pagination-bullet {
-  width: 12px;
-  height: 12px;
+  width: 14px;
+  height: 14px;
   background: white;
-  opacity: 0.7;
+  opacity: 0.6;
   margin: 0 6px;
+  border-radius: 50%;
 }
 
 .swiper-pagination-bullet-active {
   opacity: 1;
-  background: var(--primary-color); /* Match primary color */
+  background: var(--primary-color);
 }
 
-/* Navigation Buttons */
+/* Navigation Arrows */
 .swiper-button-next,
 .swiper-button-prev {
   color: white;
-  width: 40px;
-  height: 40px;
-  background: rgba(0, 0, 0, 0.3);
+  width: 44px;
+  height: 44px;
+  background: rgba(0, 0, 0, 0.35);
   border-radius: 50%;
   transition: all 0.3s ease;
 }
@@ -148,36 +130,45 @@ body {
   background: var(--primary-color);
 }
 
-.swiper-button-next:after,
-.swiper-button-prev:after {
+.swiper-button-next::after,
+.swiper-button-prev::after {
   font-size: 18px;
 }
 
-/* Responsive Design */
+/* Responsive Breakpoints */
 @media (max-width: 768px) {
   .swiper-parent {
     height: 80vh;
   }
+
   .text-overlay h1 {
     font-size: 2rem;
   }
+
   .text-overlay p {
     font-size: 1rem;
+  }
+
+  .text-overlay {
+    padding: 20px;
   }
 }
 
 @media (max-width: 480px) {
   .swiper-parent {
-    height: 60vh;
+    height: 65vh;
   }
+
   .text-overlay h1 {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
   }
+
   .text-overlay p {
-    font-size: 0.9rem;
+    font-size: 0.95rem;
   }
+
   .text-overlay .btn {
-    padding: 10px 20px;
     font-size: 0.9rem;
+    padding: 10px 24px;
   }
 }

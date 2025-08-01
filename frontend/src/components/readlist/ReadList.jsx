@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import axiosInstance from '../../axiosinstance/axiosInstance';
 import { useNavigate } from 'react-router-dom';
 
 function ReadList() {
@@ -16,7 +16,7 @@ function ReadList() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get('https://bookapp-2nn8.onrender.com/api/book/readlist', {
+        const res = await axiosInstance.get('/book/readlist', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -36,7 +36,7 @@ function ReadList() {
 
   const handleDelete = async (bookId) => {
     try {
-      const res = await axios.delete(`https://bookapp-2nn8.onrender.com/api/book/readlist/${bookId}`, {
+      const res = await axiosInstance.delete(`/book/readlist/${bookId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

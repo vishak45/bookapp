@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
+import { toast } from 'react-toastify'
 
-import axios from 'axios'
 import Swal from 'sweetalert2'
-
+import axiosInstance from '../../axiosinstance/axiosInstance'
 function SpecificBook() {
   
   
@@ -92,68 +92,85 @@ function SpecificBook() {
 
 
   useEffect(() => {
-    const fetchBook = async () => {
-      try {
-        const response = await axios.get(`https://bookapp-2nn8.onrender.com/api/book/specificbook/${id}`)
-        if (response.data) {
-          setReviews(response.data.reviews)
-          setBook(response.data)
-          window.scrollTo(0, 0)
-          // Fetch suggested books by same subject
-          
-          const sugRes = await axios.get(`https://bookapp-2nn8.onrender.com/api/book/genre/${response.data.subject}?limit=10&excludeId=${response.data._id}`);
+  const fetchAllData = async () => {
+    try {
+      setLoading(true);
 
-
-          if (sugRes.data && Array.isArray(sugRes.data)) {
-            setSuggested(
-              sugRes.data
-                .filter(
-                  b =>
-                    b.subject === response.data.subject &&
-                    b._id !== response.data._id
-                )
-                .slice(0, 8)
-            )
-          }
-          if(token){
-          const checkList=await axios.get(`https://bookapp-2nn8.onrender.com/api/book/checklist/${id}`,{
-            headers: {
-              Authorization: `Bearer ${token}`
-            }
-          })
-          if(checkList.data.message=="Book already in readlist"){
-            setAdded(true)
-          }
-          
-        }}
-         const info = genreInfoMap[response.data.subject];
-  setAdditionalInfo(info || null)
-      } catch (error) {
-        console.log(error)
-      } finally {
-        setLoading(false)
-        
-      }
-       
+      const bookRes = axiosInstance.get(`/book/specificbook/${id}`);
       
+
+      // Fetch these in parallel — they don't depend on each other
+      const [response] = await Promise.all([bookRes]);
+
+      if (response.data) {
+        setBook(response.data);
+        setReviews(response.data.reviews || []);
+        window.scrollTo(0, 0);
+
+        const subject = response.data.subject;
+        const bookId = response.data._id;
+
+        // Now fire optional/supplementary requests
+        const promises = [
+          axiosInstance.get(`/book/genre/${subject}?limit=10&excludeId=${bookId}`)
+        ];
+
+        if (token) {
+          promises.push(
+            axiosInstance.get(`/book/checklist/${id}`, {
+              headers: { Authorization: `Bearer ${token}` }
+            })
+          );
+        }
+
+        const [sugRes, checkListRes] = await Promise.all(promises);
+
+        // Handle suggestions
+        if (sugRes?.data?.length) {
+          setSuggested(
+            sugRes.data
+              .filter(b => b.subject === subject && b._id !== bookId)
+              .slice(0, 8)
+          );
+        }
+
+        // Handle readlist check
+        if (checkListRes?.data?.message === 'Book already in readlist') {
+          setAdded(true);
+        }
+
+        // Genre info
+        const info = genreInfoMap[subject];
+        setAdditionalInfo(info || null);
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
     }
-    fetchBook()
-    
-  }, [id])
+  };
+
+  fetchAllData();
+}, [id]);
+
 
   const handleAddToReadlist = async() => {
     
     if(!token){
-      Swal.fire({
-        icon: 'warning',
-        title: 'Not Logged In',
-        text: 'Please log in to add book to readlist.',
-      })
+   toast.error('Please log in to add book to readlist.', {
+  position: 'top-center',
+  autoClose: 2000,
+  hideProgressBar: false,
+  closeButton: false,
+});
+
+
+
       return
     }
     setAdded(true)
     try {
-      await axios.post(`https://bookapp-2nn8.onrender.com/api/book/readlist/${id}`,{},{
+      await axiosInstance.post(`/book/readlist/${id}`,{},{
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -174,7 +191,7 @@ function SpecificBook() {
 const handleDeleteReview=async(bid,rid)=>{
   
   try {
-    await axios.delete(`https://bookapp-2nn8.onrender.com/api/book/review/${bid}/${rid}`,{
+    await axiosInstance.delete(`/book/review/${bid}/${rid}`,{
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -189,32 +206,32 @@ const handleDeleteReview=async(bid,rid)=>{
   e.preventDefault();
 
   const user = JSON.parse(localStorage.getItem('user'));
-  if (!user) {
-    Swal.fire({
-      icon: 'warning',
-      title: 'Not Logged In',
-      text: 'Please log in to submit a review.',
-      confirmButtonColor: '#28a745',
-    });
+  if (!user && !token) {
+    toast.error('Please log in to write a review.', {
+  position: 'top-center',
+  autoClose: 2000,
+  hideProgressBar: false,
+  closeButton: false,
+});
     return;
   }
-const token = localStorage.getItem('token');
+
   const { _id, name } = user;
 
   if (newReview.reviewMessage.trim() === '') {
-    Swal.fire({
-      icon: 'error',
-      title: 'Empty Review',
-      text: 'Please write something in your review.',
-      confirmButtonColor: '#28a745',
-    });
+    toast.error('Please enter a review.', {
+  position: 'top-center',
+  autoClose: 2000,
+  hideProgressBar: false,
+  closeButton: false,
+});
     return;
   }
 
   // Add new review to state
   
   try{
-    const res=await axios.post(`https://bookapp-2nn8.onrender.com/api/book/review/${id}`, {
+    const res=await axiosInstance.post(`/book/review/${id}`, {
       userid: _id,
       name: name,
       rating: parseInt(newReview.rating),
@@ -241,12 +258,12 @@ const token = localStorage.getItem('token');
     reviewMessage: ''
   })
 
-  Swal.fire({
-    icon: 'success',
-    title: 'Review Submitted',
-    text: 'Your review has been added.',
-    confirmButtonColor: '#28a745',
-  });
+  toast.success('Review submitted successfully', {
+  position: 'top-center',
+  autoClose: 2000,
+  hideProgressBar: false,
+  closeButton: false,
+});
   
  
 };

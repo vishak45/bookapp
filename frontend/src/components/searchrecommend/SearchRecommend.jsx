@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import axiosInstance from '../../axiosinstance/axiosInstance';
 import './SearchRecommend.css'
 import { useNavigate } from 'react-router-dom';
 function SearchRecommend() {
@@ -10,7 +10,7 @@ function SearchRecommend() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('https://bookapp-2nn8.onrender.com/api/book/search');
+        const response = await axiosInstance.get('/book/search');
         if (response.data) {
           setBooks(response.data); // only show first 100
 

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import axiosInstance from '../../axiosinstance/axiosInstance';
 import Swal from 'sweetalert2';
 
 function ReviewFilter() {
@@ -16,7 +16,7 @@ function ReviewFilter() {
 
     const fetchData = async () => {
       try {
-        const res = await axios.get('https://bookapp-2nn8.onrender.com/api/book/reviews', {
+        const res = await axiosInstance.get('/book/reviews', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -46,7 +46,7 @@ function ReviewFilter() {
       });
 
       if (confirm.isConfirmed) {
-        const res = await axios.delete(`https://bookapp-2nn8.onrender.com/api/book/review/${bookid}/${reviewid}`, {
+        const res = await axiosInstance.delete(`/book/review/${bookid}/${reviewid}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

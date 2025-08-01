@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import { Link,useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import Swal from 'sweetalert2';
+
+import { toast } from 'react-toastify';
+import axiosInstance from '../../axiosinstance/axiosInstance';
 function Register() {
   const navigate=useNavigate();
   const [name, setName] = useState('');
@@ -24,16 +25,30 @@ function Register() {
     e.preventDefault();
     if (validate()) {
       try{
-        const res=await axios.post('https://bookapp-2nn8.onrender.com/api/user/register',{name,email,password});
+        const res=await axiosInstance.post('/user/register',{name,email,password});
       console.log(res.data);
       if(res.data)
       {
-         Swal.fire({
-          title: "Registration successful!",
-          confirmButtonColor: '#28a745',
-          icon: "success",
-        });
-        navigate("/signin");
+         toast.success('Registration Successful', {
+             position: 'top-center',
+             autoClose: 2000,
+             hideProgressBar: false,
+             closeOnClick: true,
+             pauseOnHover: false,
+             draggable: false,
+             theme: 'dark',
+            
+             style: {
+               background: '#090909',
+               color: '#28a745',
+               fontWeight: '600',
+               borderRadius: '8px',
+             },
+             progressStyle: {
+               background: '#28a745',
+             },
+             onClose: () => navigate('/signin'),
+           });
       }
       }
       catch(error)

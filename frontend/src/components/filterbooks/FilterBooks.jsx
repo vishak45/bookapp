@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import axios from 'axios'
+import axiosInstance from '../../axiosinstance/axiosInstance'
 import { useNavigate } from 'react-router-dom'
 import '../Home.css'
 function FilterBooks() {
@@ -15,7 +15,7 @@ function FilterBooks() {
     const fetchBooks = async () => {
       setLoading(true)
       try {
-        const response = await axios.get(`https://bookapp-2nn8.onrender.com/api/book/genre/${genre}`)
+        const response = await axiosInstance.get(`/book/genre/${genre}`)
         if(response.data) {
           setBooks(response.data)
         }

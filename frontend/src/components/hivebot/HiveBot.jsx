@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import axiosInstance from '../../axiosinstance/axiosInstance';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 
@@ -24,7 +24,7 @@ function HiveBot() {
 
     const checkHistory = async () => {
       try{
-      const res = await axios.get('https://bookapp-2nn8.onrender.com/api/hivebot/checkhistory', {
+      const res = await axiosInstance.get('/hivebot/checkhistory', {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -61,7 +61,7 @@ useEffect(() => {
     setLoading(true);
 
     try {
-      const res = await axios.post('https://bookapp-2nn8.onrender.com/api/hivebot/askquestion', { prompt, chatId }, {
+      const res = await axiosInstance.post('/hivebot/askquestion', { prompt, chatId }, {
         headers: {
           Authorization: `Bearer ${token}`
         }

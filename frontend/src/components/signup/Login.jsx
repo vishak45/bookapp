@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import Swal from 'sweetalert2';
+import { toast } from 'react-toastify'
+
+import axiosInstance from '../../axiosinstance/axiosInstance';
 function Login() {
   const navigate=useNavigate();
   const [email, setEmail] = useState('');
@@ -10,22 +11,31 @@ function Login() {
   const handleLogin=async(e)=>{
      e.preventDefault();
     try{
-      const response=await axios.post('https://bookapp-2nn8.onrender.com/api/user/login',{email,password});
+      const response=await axiosInstance.post('/user/login',{email,password});
       console.log(response.data);
       if (response.data.token) {
         localStorage.setItem('token', response.data.token);
         localStorage.setItem('user', JSON.stringify(response.data.userExist));
-        Swal.fire({
-          title: 'Success',
-          text: 'Login Successful',
-          icon: 'success',
-          confirmButtonText: 'OK',
-          confirmButtonColor: '#28a745',
-          allowOutsideClick: false,
-          allowEscapeKey: false
-        }).then(() => {
-          navigate('/');
-        });
+        toast.success('Login Successful', {
+    position: 'top-center',
+    autoClose: 2000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: false,
+    draggable: false,
+    theme: 'dark',
+   
+    style: {
+      background: '#090909',
+      color: '#28a745',
+      fontWeight: '600',
+      borderRadius: '8px',
+    },
+    progressStyle: {
+      background: '#28a745',
+    },
+    onClose: () => navigate('/'),
+  });
       }
      
     }

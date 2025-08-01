@@ -1,7 +1,8 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { useEffect } from 'react';
 import { jwtDecode } from 'jwt-decode'; // ✅ Correct import
-
+import {ToastContainer} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import Footer from './components/footer/Footer';
 import Home from './components/Home';
@@ -47,6 +48,7 @@ function App() {
   return (
     <Router>
       <TokenHandler />
+      <ToastContainer />
       <Header />
 
       <Routes>

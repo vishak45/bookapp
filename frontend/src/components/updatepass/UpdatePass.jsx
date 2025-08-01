@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import Swal from 'sweetalert2';
 
+import { toast } from 'react-toastify';
+import axiosInstance from '../../axiosinstance/axiosInstance';
 function UpdatePass() {
   const navigate = useNavigate();
   const token = localStorage.getItem('token');
@@ -42,8 +42,8 @@ function UpdatePass() {
     if (!validateInputs()) return;
 
     try {
-      const res = await axios.put(
-        'https://bookapp-2nn8.onrender.com/api/user/updatepassword',
+      const res = await axiosInstance.put(
+        '/user/updatepassword',
         { oldpass, newpass },
         {
           headers: {
@@ -54,14 +54,28 @@ function UpdatePass() {
       );
 
       if (res.data.message) {
-        Swal.fire({
-          position: 'center',
-          icon: 'success',
-          title: 'Password updated successfully',
-          showConfirmButton: false,
-          timer: 1500,
-        });
+         toast.success('Password updated successfully', {
+                     position: 'top-center',
+                     autoClose: 2000,
+                     hideProgressBar: false,
+                     closeOnClick: true,
+                     pauseOnHover: false,
+                     draggable: false,
+                     theme: 'dark',
+                    
+                     style: {
+                       background: '#090909',
+                       color: '#28a745',
+                       fontWeight: '600',
+                       borderRadius: '8px',
+                     },
+                     progressStyle: {
+                       background: '#28a745',
+                     },
+                    
+                   });
         localStorage.removeItem('token');
+        localStorage.removeItem('user');
         navigate('/signin');
       }
     } catch (error) {

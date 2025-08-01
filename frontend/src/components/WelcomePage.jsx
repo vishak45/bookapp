@@ -11,7 +11,7 @@ import img3 from "../assets/pics/trade and discover.webp";
 import "./WelcomePage.css"; // We’ll move your styles here
 
 function WelcomePage() {
-    const token = localStorage.getItem('token');
+   
   useEffect(() => {
     const swiper = new Swiper(".mySwiper", {
       loop: true,
