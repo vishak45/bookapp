@@ -18,6 +18,10 @@ app.use('/api/user',userRoutes);
 app.use('/api/book',bookRoutes);
 app.use('/api/hivebot',hivebotRoutes);
 app.get("/", (req, res) => res.status(200).send("server is running!"));
+app.get('/ping', (req, res) => {
+  res.status(200).send('pong');
+});
+
 storeBooks();
 app.listen(port,()=>{
     console.log(`Server is running on port ${port}`);
