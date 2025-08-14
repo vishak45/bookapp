@@ -1,4 +1,4 @@
-# Book App
+# BookHive
 BookHive is a free, open-source platform built for book lovers. Our mission is to make discovering, exploring, and sharing books as enjoyable as reading them.
 
 With BookHive, you can:
