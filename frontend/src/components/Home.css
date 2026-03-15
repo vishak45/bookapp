@@ -1,0 +1,6 @@
+/* Add to Header.css or a new Home.css and import it in Home.jsx */
+.book-card:hover {
+  transform: translateY(-8px) scale(1.03);
+  box-shadow: 0 8px 32px #28a74555, 0 2px 8px #0002;
+  border: 1.5px solid #28a745;
+}

@@ -1,0 +1,88 @@
+/* Wrapper to position dropdown properly */
+.dropdown-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.username-highlight {
+  font-weight: bold;
+  color: #28a745; /* Matches your theme */
+  cursor: pointer;
+}
+.logo-hover {
+  transition: transform 0.3s ease;
+}
+
+.logo-hover:hover {
+  transform: scale(1.15) rotate(5deg);
+}
+
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  background-color: #23272b;
+  color:white;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  border-radius: 8px;
+  top: 100%;
+  right: 0;
+  min-width: 160px;
+  z-index: 1050;
+  padding: 8px 0;
+  transition: all 0.3s ease;
+}
+
+.dropdown-menu.show {
+  display: block;
+}
+.search-button{
+  background-color: #28a745;
+  
+  padding: 5px 20px;
+  margin: 10px;
+  text-align: center;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+
+}
+.search-button:hover {
+  background-color: #218838; /* darker green on hover */
+}
+.dropdown-item {
+  display: block;
+  padding: 10px 16px;
+  color: #fff;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.dropdown-item:hover {
+  background-color: #f8f9fa;
+  color: #28a745;
+  font-weight: 500;
+}
+
+/* Responsive tweaks for mobile screens */
+@media (max-width: 768px) {
+  .dropdown-menu {
+    position: static; /* 👈 Instead of absolute, let it flow in mobile */
+    width: 100%;      /* Full width */
+    box-shadow: none; /* No shadow on mobile */
+    /* Light background for mobile */
+    border-radius: 0;
+    margin-top: 5px;
+  }
+
+  .dropdown-item {
+    padding: 12px 18px;
+    font-size: 15px;
+    border-bottom: 1px solid #dee2e6; /* subtle separator */
+  }
+
+  .username-highlight {
+    font-size: 15px;
+  }
+}
